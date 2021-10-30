@@ -1,0 +1,1 @@
+/home/qwer/oslearn/myos/os/target/riscv64gc-unknown-none-elf/release/os: /home/qwer/oslearn/myos/os/src/console.rs /home/qwer/oslearn/myos/os/src/entry.asm /home/qwer/oslearn/myos/os/src/lang_items.rs /home/qwer/oslearn/myos/os/src/main.rs /home/qwer/oslearn/myos/os/src/sbi.rs
