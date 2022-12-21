@@ -38,9 +38,9 @@ $(KERNEL_BIN): kernel
 
 kernel:
 	@echo Platform: $(BOARD)
-	@cp src/linker-$(BOARD).ld src/linker.ld
+	# @cp src/linker-$(BOARD).ld src/linker.ld
 	@cargo build $(MODE_ARG)
-	@rm src/linker.ld
+	# @rm src/linker.ld
 
 clean:
 	@cargo clean
@@ -58,7 +58,7 @@ run: run-inner
 run-inner: build
 	@qemu-system-riscv64 \
 		-machine virt \
-		-vnc :1 \
+		-nographic \
 		-bios $(BOOTLOADER) \
 		-device loader,file=$(KERNEL_BIN),addr=$(KERNEL_ENTRY_PA)
 
