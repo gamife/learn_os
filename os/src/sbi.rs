@@ -1,4 +1,3 @@
-
 #![allow(unused)] // 此行请放在该文件最开头
 const SBI_SET_TIMER: usize = 0;
 const SBI_CONSOLE_PUTCHAR: usize = 1;
@@ -12,11 +11,10 @@ const SBI_SHUTDOWN: usize = 8;
 
 use core::arch::asm;
 
-
 #[inline(always)]
-fn sbi_call(which: usize, arg0:usize, arg1:usize, arg2: usize) -> usize{
+fn sbi_call(which: usize, arg0: usize, arg1: usize, arg2: usize) -> usize {
     let mut ret;
-    unsafe{
+    unsafe {
         asm!(
             "ecall",
             inlateout("x10") arg0 => ret,

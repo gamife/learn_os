@@ -1,4 +1,6 @@
 # Building
+# ?= 如果没传参给默认值,传了就不管了, 比如 make run log=info 实际log=info, 如果 makr run 实际log=trace
+log ?= trace
 TARGET := riscv64gc-unknown-none-elf
 MODE := release
 KERNEL_ELF := target/$(TARGET)/$(MODE)/os
@@ -55,6 +57,8 @@ disasm-vim: kernel
 
 run: run-inner
 
+# 设置LOG日志等级
+run-inner:export LOG=$(log)
 run-inner: build
 	@qemu-system-riscv64 \
 		-machine virt \
