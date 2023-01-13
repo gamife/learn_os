@@ -9,6 +9,6 @@ extern crate log;
 #[no_mangle]
 fn main() -> i32 {
     println!("hello world");
-    error!("hello world");
+    error!("log user main");
     0
 }

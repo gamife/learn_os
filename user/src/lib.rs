@@ -21,7 +21,7 @@ pub mod syscall;
 pub extern "C" fn _start() -> ! {
     clear_bss();
     logging::init();
-    error!("main log");
+    error!("log user _start");
     exit(main());
     panic!("unreachable after sys_exit");
 }

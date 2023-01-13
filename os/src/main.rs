@@ -19,24 +19,35 @@ extern crate lazy_static;
 extern crate log;
 #[macro_use]
 mod console;
+mod batch;
+mod boards;
 mod lang_items;
 mod logging;
 mod sbi;
+mod sync;
+mod syscall;
+mod trap;
 
 // 初始化栈
 use core::arch::global_asm;
+
+use crate::batch::run_next_app;
 global_asm!(include_str!("entry.asm"));
 
+global_asm!(include_str!("link_app.S"));
 /// 程序入口
 #[no_mangle]
 pub fn rust_main() -> ! {
     clear_bss();
     logging::init();
     print_mem_layout();
-    println!("hello word");
-    error!("log color");
+    println!("[kernel] hello word");
 
-    panic!("Shutdown machine!");
+    trap::init();
+    batch::init();
+    run_next_app();
+
+    // run_next_app 在执行完最后一个app后,会退出qemu,所以走不到这里
 }
 
 /// 将bss段清零
