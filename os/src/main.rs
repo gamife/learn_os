@@ -19,7 +19,9 @@ extern crate lazy_static;
 extern crate log;
 #[macro_use]
 mod console;
-mod batch;
+mod task;
+mod config;
+mod loader;
 mod boards;
 mod lang_items;
 mod logging;
@@ -31,7 +33,6 @@ mod trap;
 // 初始化栈
 use core::arch::global_asm;
 
-use crate::batch::run_next_app;
 global_asm!(include_str!("entry.asm"));
 
 global_asm!(include_str!("link_app.S"));
@@ -44,9 +45,9 @@ pub fn rust_main() -> ! {
     println!("[kernel] hello word");
 
     trap::init();
-    batch::init();
-    run_next_app();
-
+    loader::load_apps();
+    task::run_first_task();
+    panic!("unreachable in rust_main");
     // run_next_app 在执行完最后一个app后,会退出qemu,所以走不到这里
 }
 

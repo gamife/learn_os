@@ -2,7 +2,7 @@
 #![feature(panic_info_message)]
 #![feature(linkage)]
 
-use syscall::{sys_exit, sys_write};
+use syscall::{sys_exit, sys_write, sys_yield};
 
 #[macro_use]
 extern crate lazy_static;
@@ -21,7 +21,6 @@ pub mod syscall;
 pub extern "C" fn _start() -> ! {
     clear_bss();
     logging::init();
-    error!("log user _start");
     exit(main());
     panic!("unreachable after sys_exit");
 }
@@ -46,6 +45,11 @@ pub fn write(fd: usize, buffer: &[u8]) -> isize {
     sys_write(fd, buffer)
 }
 
+
 pub fn exit(exit_code: i32) -> isize {
     sys_exit(exit_code)
+}
+
+pub fn yield_() -> isize {
+    sys_yield()
 }

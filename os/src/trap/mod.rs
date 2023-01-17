@@ -6,13 +6,19 @@ use riscv::register::{
     utvec::TrapMode,
 };
 
-use crate::{batch::run_next_app, syscall::syscall};
+use crate:: syscall::syscall;
 
 use self::context::TrapContext;
 
 pub mod context;
 
 global_asm!(include_str!("trap.S"));
+
+extern "C"{
+    // 需要sp执行kernel sp
+    pub fn _restore();
+}
+
 
 pub fn init() {
     extern "C" {
@@ -38,11 +44,11 @@ pub fn trap_handler(cx: &mut TrapContext) -> &mut TrapContext {
         }
         Trap::Exception(Exception::StoreFault) | Trap::Exception(Exception::StorePageFault) => {
             println!("[kernel] PageFault in application, kernel killed it.");
-            run_next_app();
+            panic!("[kernel] Cannot coutine trap");
         }
         Trap::Exception(Exception::IllegalInstruction) => {
             println!("[kernel] IllegalInstruction in application, kernel killed it.");
-            run_next_app();
+            panic!("[kernel] Cannot coutine trap");
         }
         _ => {
             panic!(

@@ -42,10 +42,7 @@ _alltraps:
     mv a0, sp
     call trap_handler
 _restore:
-    # a0是 trap_handler的返回值, 把a0作为kernel sp
-
-    mv sp, a0
-
+    # 需要当前sp为kernel sp
     ld t0, 33*8(sp)
     ld t1, 32*8(sp)
     ld t2, 2*8(sp)
