@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["color_code_from_log_level",""],["init",""],["print_with_color",""]],"macro":[["with_color","Add escape sequence to print with color in Linux console"]],"struct":[["LOG_LOCK",""],["SimpleLogger",""]]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["clear_bss","将bss段清零"],["print_mem_layout","打印内存布局"],["rust_main","程序入口"]],"macro":[["print",""],["println",""]],"mod":[["boards",""],["config",""],["console",""],["lang_items",""],["loader",""],["logging",""],["sbi",""],["sync",""],["syscall",""],["task",""],["trap",""]]};
