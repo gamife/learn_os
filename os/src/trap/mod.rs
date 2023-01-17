@@ -3,10 +3,10 @@ use core::arch::global_asm;
 use riscv::register::{
     scause::{self, Exception, Trap},
     stval, stvec,
-    utvec::TrapMode,
+    utvec::TrapMode, sie, scause::Interrupt,
 };
 
-use crate:: syscall::syscall;
+use crate::{ syscall::syscall, timer::set_next_trigger, task::suspend_current_and_run_next};
 
 use self::context::TrapContext;
 
@@ -31,11 +31,22 @@ pub fn init() {
     }
 }
 
+pub fn enable_timer_interrupt() {
+    unsafe {
+        // S特权级时钟中断 使能
+        sie::set_stimer();
+    }
+}
+
 #[no_mangle]
 pub fn trap_handler(cx: &mut TrapContext) -> &mut TrapContext {
     let scause_r = scause::read();
     let stval_r = stval::read();
     match scause_r.cause() {
+        Trap::Interrupt(Interrupt::SupervisorTimer) => {
+            set_next_trigger();
+            suspend_current_and_run_next();
+        }
         Trap::Exception(Exception::UserEnvCall) => {
             // 这个trap是由"ecall"(码长为4)指令调用的, 所以trap结束后,要回到ecall的下一条指令的话, 要加4
             cx.spec += 4;

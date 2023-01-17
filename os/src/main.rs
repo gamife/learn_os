@@ -29,6 +29,7 @@ mod sbi;
 mod sync;
 mod syscall;
 mod trap;
+mod timer;
 
 // 初始化栈
 use core::arch::global_asm;
@@ -44,8 +45,12 @@ pub fn rust_main() -> ! {
     print_mem_layout();
     println!("[kernel] hello word");
 
-    trap::init();
     loader::load_apps();
+    
+    trap::init();
+    trap::enable_timer_interrupt();
+    timer::set_next_trigger();
+
     task::run_first_task();
     panic!("unreachable in rust_main");
     // run_next_app 在执行完最后一个app后,会退出qemu,所以走不到这里
